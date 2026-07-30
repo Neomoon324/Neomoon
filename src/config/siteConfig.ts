@@ -6,7 +6,7 @@ const SITE_LANG = "zh_CN";
 
 export const siteConfig: SiteConfig = {
 	// 站点标题
-	title: "krkrSora's Neverland",
+	title: "krkr_Soraの部屋",
 
 	// 站点副标题
 	subtitle: "",
@@ -16,11 +16,11 @@ export const siteConfig: SiteConfig = {
 
 	// 站点描述
 	description:
-		"krkrSora's Neverland",
+		"krkr_Soraの部屋",
 
 	// 站点关键词
 	keywords: [
-		"krkrSora's Neverland",
+		"krkr_Soraの部屋",
 		"ACGN",
 		"博客",
 		"静态博客",
@@ -75,15 +75,15 @@ export const siteConfig: SiteConfig = {
 			alt: "🍀",
 		},
 		// 导航栏标题
-		title: "krkrSora's Neverland",
+		title: "krkrSoraの部屋",
 		// 全宽导航栏，导航栏是否占满屏幕宽度
 		widthFull: false,
 		// 导航菜单对齐方式，left：左对齐，center：居中
-		menuAlign: "center",
+		menuAlign: "left",
 		// 导航栏图标和标题是否跟随主题色
 		followTheme: false,
 		// 导航栏是否固定在顶部并始终可见
-		stickyNavbar: true,
+		stickyNavbar: false,
 	},
 
 	// 站点开始日期，用于统计运行天数
@@ -114,13 +114,13 @@ export const siteConfig: SiteConfig = {
 	// 文章列表布局配置
 	postListLayout: {
 		// 默认布局模式："list" 列表模式（单列布局），"grid" 网格模式（多列布局）
-		defaultMode: "grid",
+		defaultMode: "list",
 		// 移动端默认布局模式，不设置则跟随 defaultMode
 		mobileDefaultMode: "grid",
 		// 是否在文章列表中显示标签
 		showTags: false,
 		// 文章简介显示行数，设为 0 则不截断
-		descriptionLines: 2,
+		descriptionLines: 3,
 		// 是否允许用户切换布局
 		allowSwitch: true,
 		// 网格布局配置，仅在 defaultMode 为 "grid" 或允许切换布局时生效
