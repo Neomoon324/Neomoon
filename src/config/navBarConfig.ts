@@ -126,6 +126,12 @@ export const LinkPresets: Record<string, NavBarLink> = {
 		url: "/gallery/",
 		icon: "material-symbols:photo-library",
 	},
+	bilibili: {
+		name: "bilibili",
+		url: "https://space.bilibili.com/38932988",
+		external: true,
+        icon: "fa7-brands:bilibili",
+	},
 };
 
 export const navBarConfig: NavBarConfig = getDynamicNavBarConfig();
