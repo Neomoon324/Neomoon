@@ -45,6 +45,9 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 
 			// 番组计划
 			LinkPresets.Bangumi,
+			
+			// bilibili
+			LinkPresets.bilibili
 		],
 	});
 
@@ -125,7 +128,7 @@ export const LinkPresets: Record<string, NavBarLink> = {
 	},
 	bilibili: {
 		name: "bilibili",
-		url: "https://space.bilibili.com/38932988",
+		url: "https://space.bilibili.com/617333392",
 		external: true,
         icon: "fa7-brands:bilibili",
 	},
