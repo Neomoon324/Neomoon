@@ -106,6 +106,8 @@ export const siteConfig: SiteConfig = {
 		bangumi: true,
 		// 相册页面开关
 		gallery: true,
+		// bilibili
+		bilibili: true,
 	},
 
 	// 分类导航栏开关，在首页和归档页顶部显示分类快捷导航
@@ -170,6 +172,11 @@ export const siteConfig: SiteConfig = {
 		categoryOrder: ["anime", "book", "game", "music"],
 	},
 
+	// bilibili
+	bilibili: {
+  // 你的 Bilibili 用户 UID
+  uid: "617333392",
+},
 	// 分页配置
 	pagination: {
 		// 每页显示的文章数量
