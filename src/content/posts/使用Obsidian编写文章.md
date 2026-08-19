@@ -6,7 +6,6 @@ description: 如何使用Obsidian，更方便地插入模板 图片，使用表�
 image: ./1.jpeg
 tags:
 category: 博客指南
-draft: false
 ---
 
 # Obsidian介绍
@@ -62,9 +61,9 @@ Obsidian插入图片只需要把图片拖入软件
 ```
 ---
 
-title: {{title}}
+title: 
 
-published: {{date}}
+published: 
 
 pinned: false
 
@@ -81,7 +80,6 @@ draft: false
 ---
 ```
 
-{{title}}  {{date}}  在导入模板时会变为你的笔记标题和创建日期
 
 
 **最后**，打开Obsidian界面左下角的 **设置** 键，单击”核心插件“的子菜单 **模板** ，单击设置图标，选择刚才创建的文件夹
