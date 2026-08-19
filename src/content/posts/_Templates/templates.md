@@ -1,6 +1,6 @@
 ---
-title: {{title}}
-published: {{date}}
+title: 
+published: 
 pinned: false
 description:
 image:

@@ -3,7 +3,7 @@ title: 使用Obsidian更简单地编写博客文章
 published: 2026-08-19
 description: 如何使用Obsidian，更方便地插入模板 图片，使用表格 代码块等功能
 image: ./1.avif
-tags:
+tags: []
 category: 博客指南
 lang: ""
 ---
@@ -57,25 +57,16 @@ Obsidian可以更方便地设置段落，文本格式，插入表格等，只需
 
 
 在新建的笔记中输入这段代码
-```
+```yaml
 ---
-
 title: 
-
 published: 
-
 pinned: false
-
 description:
-
 image:
-
 tags:
-
 category:
-
 draft: false
-
 ---
 ```
 
