@@ -1,9 +1,8 @@
 ---
 title: 使用Obsidian更简单地编写博客文章
 published: 2026-08-19
-description: 如何使用Obsidian，更方便地插入模板 图片，使用表格 代码块等功能
+description: 如何使用Obsidian，更方便地插入模板图片，使用表格代码块等功能
 image: ./1.avif
-tags: []
 category: 博客指南
 lang: ""
 ---
@@ -28,6 +27,7 @@ Obsidian的核心文件格式是**纯文本 Markdown**，所有笔记都以 **.m
 
 Obsidian可以更方便地设置段落，文本格式，插入表格等，只需右键
 ![](./images/Pasted%20image%2020260819111304.avif)
+
 
 
 # 如何使用Obsidian
@@ -57,10 +57,10 @@ Obsidian可以更方便地设置段落，文本格式，插入表格等，只需
 
 
 在新建的笔记中输入这段代码
-```yaml
+```
 ---
-title: 
-published: 
+title: {{title}}
+published: {{date}}
 pinned: false
 description:
 image:
