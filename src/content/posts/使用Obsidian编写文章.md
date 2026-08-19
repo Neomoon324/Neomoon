@@ -2,7 +2,7 @@
 title: 使用Obsidian更简单地编写博客文章
 published: 2026-08-19
 description: 如何使用Obsidian，更方便地插入模板 图片，使用表格 代码块等功能
-image: ./1.jpeg
+image: ./1.avif
 tags:
 category: 博客指南
 lang: ""
@@ -27,7 +27,7 @@ Obsidian的核心文件格式是**纯文本 Markdown**，所有笔记都以 **.m
 （以上文本来自菜鸟教程）
 
 Obsidian可以更方便地设置段落，文本格式，插入表格等，只需右键
-![](./images/Pasted%20image%2020260819111304.png)
+![](./images/Pasted%20image%2020260819111304.avif)
 
 
 # 如何使用Obsidian
@@ -53,7 +53,7 @@ Obsidian可以更方便地设置段落，文本格式，插入表格等，只需
 **首先**，在posts目录（你的Obsidian仓库目录）下创建一个文件夹，名称随便起。
 
 **接着**，在这个文件夹内新建一个 **.md** 文件（新建笔记）。
-![](./images/Pasted%20image%2020260819113844.png)
+![](./images/Pasted%20image%2020260819113844.avif)
 
 
 在新建的笔记中输入这段代码
@@ -86,7 +86,7 @@ draft: false
 这样模板就创建好了。
 
 想要使用模板，只需在创建空白文章后，单击左菜单栏中的 **插入模板** ，选择创建的模板即可。
-![](./images/Pasted%20image%2020260819115025.png)
+![](./images/Pasted%20image%2020260819115025.avif)
 
 
 # 开始撰写博客
