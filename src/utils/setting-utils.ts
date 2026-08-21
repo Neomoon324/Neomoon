@@ -12,6 +12,7 @@ import {
 import type { LIGHT_DARK_MODE, WALLPAPER_MODE } from "@/types/config";
 import {
 	backgroundWallpaper,
+	displaySettingsConfig,
 	expressiveCodeConfig,
 	sakuraConfig,
 	siteConfig,
@@ -86,7 +87,7 @@ export function setHue(hue: number): void {
 	r.style.setProperty("--hue", String(hue));
 }
 
-export function applyThemeToDocument(theme: LIGHT_DARK_MODE) {
+export function applyThemeToDocument(theme: LIGHT_DARK_MODE): void {
 	// 检查是否在浏览器环境中
 	if (typeof document === "undefined") {
 		return;
@@ -177,7 +178,7 @@ export function setTheme(theme: LIGHT_DARK_MODE): void {
 }
 
 // 设置系统主题监听器
-export function setupSystemThemeListener() {
+export function setupSystemThemeListener(): void {
 	// 先清理之前的监听器
 	cleanupSystemThemeListener();
 
@@ -260,7 +261,7 @@ export function getStoredTheme(): LIGHT_DARK_MODE {
 }
 
 // 初始化主题监听器（用于页面加载后）
-export function initThemeListener() {
+export function initThemeListener(): void {
 	if (
 		typeof localStorage === "undefined" ||
 		typeof localStorage.getItem !== "function"
@@ -280,7 +281,7 @@ export function initThemeListener() {
 export function applyWallpaperModeToDocument(
 	mode: WALLPAPER_MODE,
 	animate = true,
-) {
+): void {
 	// 获取当前的壁纸模式
 	const currentMode =
 		(document.documentElement.getAttribute(
@@ -288,7 +289,7 @@ export function applyWallpaperModeToDocument(
 		) as WALLPAPER_MODE) || backgroundWallpaper.mode;
 
 	// 检查是否允许切换壁纸模式
-	const isSwitchable = backgroundWallpaper.switchable ?? true;
+	const isSwitchable = displaySettingsConfig.wallpaperModeSwitchable;
 	if (!isSwitchable) {
 		// 不允许切换时，仍需初始化当前模式的UI状态（添加 wallpaper-initialized 等）
 		if (currentMode === mode) {
@@ -473,7 +474,7 @@ function showBannerMode(animate = false) {
 	if (navbar) {
 		// 获取导航栏透明模式配置（banner模式）
 		const transparentMode =
-			backgroundWallpaper.common?.navbar?.transparentMode || "semi";
+			backgroundWallpaper.banner?.navbar?.transparentMode || "semi";
 		navbar.setAttribute("data-transparent-mode", transparentMode);
 
 		// 重新初始化半透明模式滚动检测（如果需要）
@@ -489,7 +490,6 @@ function showBannerMode(animate = false) {
 function showFullscreenMode(animate = false) {
 	// 显示 wallpaper-wrapper 并切换为全屏壁纸模式
 	const wallpaperWrapper = document.getElementById("wallpaper-wrapper");
-	const isMobile = window.innerWidth < 1024;
 	const isHomePage = checkIsHomePage(window.location.pathname);
 	if (wallpaperWrapper) {
 		// 移除 overlay 模式类
@@ -497,22 +497,16 @@ function showFullscreenMode(animate = false) {
 		// 添加全屏壁纸模式类
 		wallpaperWrapper.classList.add("wallpaper-fullscreen");
 
-		if (isMobile && !isHomePage) {
-			// 移动端非首页时隐藏壁纸
-			wallpaperWrapper.style.display = "none";
-			wallpaperWrapper.classList.add("mobile-hide-banner");
-		} else {
-			// 显示壁纸
-			wallpaperWrapper.style.display = "block";
-			wallpaperWrapper.style.setProperty("display", "block", "important");
-			wallpaperWrapper.style.top = "";
-			requestAnimationFrame(() => {
-				wallpaperWrapper.classList.remove("hidden");
-				wallpaperWrapper.classList.remove("opacity-0");
-				wallpaperWrapper.classList.add("opacity-100");
-				wallpaperWrapper.classList.remove("mobile-hide-banner");
-			});
-		}
+		// 始终显示壁纸（移动端非首页也显示，与 overlay 一致）
+		wallpaperWrapper.style.display = "block";
+		wallpaperWrapper.style.setProperty("display", "block", "important");
+		wallpaperWrapper.style.top = "";
+		requestAnimationFrame(() => {
+			wallpaperWrapper.classList.remove("hidden");
+			wallpaperWrapper.classList.remove("opacity-0");
+			wallpaperWrapper.classList.add("opacity-100");
+			wallpaperWrapper.classList.remove("mobile-hide-banner");
+		});
 	}
 
 	// 显示横幅首页文本（如果启用且是首页）
@@ -542,22 +536,21 @@ function showFullscreenMode(animate = false) {
 	// 调整主内容位置
 	adjustMainContentPosition("fullscreen", animate);
 
-	// 移除透明效果（全屏壁纸模式不使用半透明）
-	adjustMainContentTransparency(false);
+	// 调整主内容透明度：全屏壁纸模式卡片半透明，复用 overlay 的 cardOpacity 配置
+	adjustMainContentTransparency(true);
 
-	// 调整导航栏透明度
+	// 调整导航栏透明度：全屏壁纸模式脱离 banner 导航栏配置，导航栏默认完全透明
+	// （透明度由卡片透明度 cardOpacity 经 wallpaper-transparent 控制）；
+	// 若开启 fullscreen.navbar.dynamicTransparent，首页顶部透明、下滑后变不透明（semifull）
 	const navbar = document.getElementById("navbar");
 	if (navbar) {
-		const transparentMode =
-			backgroundWallpaper.common?.navbar?.transparentMode || "semi";
-		navbar.setAttribute("data-transparent-mode", transparentMode);
-
-		if (
-			transparentMode === "semifull" &&
-			typeof window.initSemifullScrollDetection === "function"
-		) {
-			window.initSemifullScrollDetection();
-		}
+		const isHomePage = checkIsHomePage(window.location.pathname);
+		const dynamicTransparent =
+			backgroundWallpaper.fullscreen?.navbar?.dynamicTransparent ?? false;
+		navbar.setAttribute(
+			"data-transparent-mode",
+			isHomePage && dynamicTransparent ? "semifull" : "none",
+		);
 	}
 }
 
@@ -616,42 +609,45 @@ function hideAllWallpapers() {
 	adjustMainContentTransparency(false);
 }
 
-function updateNavbarTransparency(mode: WALLPAPER_MODE) {
+export function updateNavbarTransparency(mode: WALLPAPER_MODE): void {
 	const navbar = document.getElementById("navbar");
 	if (!navbar) return;
 
 	let transparentMode: string;
-	let enableBlur: boolean;
 	let blurAmount: number;
 
 	// 根据当前壁纸模式设置导航栏透明模式和模糊效果
 	if (mode === WALLPAPER_OVERLAY) {
 		// 全屏透明模式
 		transparentMode = "none";
-		enableBlur = false;
 		blurAmount = 0;
 	} else if (mode === WALLPAPER_NONE) {
 		// 纯色背景模式
 		transparentMode = "none";
-		enableBlur = false;
 		blurAmount = 0;
 	} else if (mode === WALLPAPER_FULLSCREEN) {
-		// 全屏壁纸模式：使用 fullscreen 配置的透明模式和模糊效果
-		transparentMode =
-			backgroundWallpaper.common?.navbar?.transparentMode || "semi";
-		enableBlur = backgroundWallpaper.common?.navbar?.enableBlur ?? true;
-		blurAmount = backgroundWallpaper.common?.navbar?.blur ?? 20;
+		// 全屏壁纸模式：脱离 banner 导航栏配置，导航栏默认完全透明
+		// （透明度由卡片透明度 cardOpacity 经 wallpaper-transparent 控制）；
+		// 若开启 fullscreen.navbar.dynamicTransparent，首页顶部透明、下滑后变不透明（semifull）
+		const isHomePage = checkIsHomePage(window.location.pathname);
+		const dynamicTransparent =
+			backgroundWallpaper.fullscreen?.navbar?.dynamicTransparent ?? false;
+		if (isHomePage && dynamicTransparent) {
+			transparentMode = "semifull";
+			blurAmount = 0;
+		} else {
+			transparentMode = "none";
+			blurAmount = 0;
+		}
 	} else {
 		// Banner模式：使用配置的透明模式和模糊效果
 		transparentMode =
-			backgroundWallpaper.common?.navbar?.transparentMode || "semi";
-		enableBlur = backgroundWallpaper.common?.navbar?.enableBlur ?? true;
-		blurAmount = backgroundWallpaper.common?.navbar?.blur ?? 20;
+			backgroundWallpaper.banner?.navbar?.transparentMode || "semi";
+		blurAmount = backgroundWallpaper.banner?.navbar?.blur ?? 20;
 	}
 
 	// 更新导航栏的透明模式属性
 	navbar.setAttribute("data-transparent-mode", transparentMode);
-	navbar.setAttribute("data-enable-blur", String(enableBlur));
 	navbar.style.setProperty("--navbar-glass-blur", `${blurAmount}px`);
 
 	// 移除现有的透明模式类
@@ -704,7 +700,7 @@ function adjustMainContentPosition(
 		case "banner": {
 			// Banner模式：主内容在banner下方
 			const isHome = checkIsHomePage(window.location.pathname);
-			const bannerTargetTop = "calc(var(--banner-height) - 3rem)";
+			const bannerTargetTop = "calc(var(--banner-height) - 3.5rem)";
 
 			// 禁用 CSS transition，防止整个定位过程中的值变化触发过渡动画
 			mainContent.style.setProperty("transition", "none", "important");
@@ -735,16 +731,15 @@ function adjustMainContentPosition(
 			break;
 		}
 		case "fullscreen": {
-			// 全屏壁纸模式：壁纸已在文档流中占100vh，主内容紧跟其后
-			const isFullscreenMobile = window.innerWidth < 1024;
+			// 全屏壁纸模式：壁纸 fixed 固定全屏。首页 hero 用 margin-top:100vh 推到首屏之下；
+			// 非首页（含移动端）与 overlay 一致，壁纸显示、内容在最上面
 			const isFullscreenHome = checkIsHomePage(window.location.pathname);
-			if (isFullscreenMobile && !isFullscreenHome) {
-				// 移动端非首页：壁纸已隐藏，主内容从导航栏下方开始
-				mainContent.classList.add("mobile-main-no-banner");
+			if (!isFullscreenHome) {
 				mainContent.classList.add("no-banner-layout");
 				mainContent.style.setProperty("top", "5.5rem", "important");
 				mainContent.style.setProperty("margin-top", "0", "important");
 				mainContent.style.position = "";
+				mainContent.style.zIndex = "";
 				mainContent.style.minHeight = "";
 				mainContent.style.transition = "";
 				break;
@@ -758,7 +753,7 @@ function adjustMainContentPosition(
 				mainContent.style.zIndex = "30";
 				mainContent.style.setProperty("top", `${computedTop}px`, "important");
 				// absolute 定位下 margin-top 不影响布局，提前设好最终值避免切换 relative 时跳变
-				mainContent.style.setProperty("margin-top", "1rem", "important");
+				mainContent.style.setProperty("margin-top", "100vh", "important");
 				mainContent.classList.add("no-banner-layout");
 				void mainContent.offsetWidth;
 				mainContent.style.setProperty(
@@ -780,7 +775,7 @@ function adjustMainContentPosition(
 				mainContent.style.position = "relative";
 				mainContent.style.zIndex = "30";
 				mainContent.style.setProperty("top", "0", "important");
-				mainContent.style.setProperty("margin-top", "1rem", "important");
+				mainContent.style.setProperty("margin-top", "100vh", "important");
 				mainContent.style.transition = "";
 			}
 			break;
@@ -874,7 +869,7 @@ export function getStoredWallpaperMode(): WALLPAPER_MODE {
 		return backgroundWallpaper.mode;
 	}
 
-	const isSwitchable = backgroundWallpaper.switchable ?? true;
+	const isSwitchable = displaySettingsConfig.wallpaperModeSwitchable;
 	if (!isSwitchable) {
 		localStorage.removeItem("wallpaperMode");
 		return backgroundWallpaper.mode;
@@ -1034,7 +1029,7 @@ export function applyStoredOverlaySettingsToDocument(): void {
 
 // Waves animation functions
 export function getDefaultWavesEnabled(): boolean {
-	const wavesConfig = backgroundWallpaper.common?.waves?.enable;
+	const wavesConfig = backgroundWallpaper.banner?.waves?.enable;
 	if (typeof wavesConfig === "object") {
 		// 如果是分设备配置，检查当前设备
 		const isMobile =
@@ -1092,7 +1087,7 @@ export function applyWavesEnabledToDocument(enabled: boolean): void {
 
 // Gradient transition functions
 export function getDefaultGradientEnabled(): boolean {
-	const gradientConfig = backgroundWallpaper.common?.gradient?.enable;
+	const gradientConfig = backgroundWallpaper.banner?.gradient?.enable;
 	if (typeof gradientConfig === "object") {
 		const isMobile =
 			typeof window !== "undefined" ? window.innerWidth < 768 : false;
@@ -1185,7 +1180,7 @@ export function getDefaultBannerTitleEnabled(): boolean {
 }
 
 export function getDefaultBannerCarouselEnabled(): boolean {
-	return backgroundWallpaper.banner?.carousel?.enable ?? false;
+	return backgroundWallpaper.common?.carousel?.enable ?? false;
 }
 
 export function getStoredBannerTitleEnabled(): boolean {
@@ -1203,8 +1198,7 @@ export function getStoredBannerTitleEnabled(): boolean {
 }
 
 export function getStoredBannerCarouselEnabled(): boolean {
-	const isSwitchable =
-		backgroundWallpaper.banner?.carousel?.switchable ?? false;
+	const isSwitchable = displaySettingsConfig.bannerCarouselSwitchable;
 	if (!isSwitchable) {
 		return getDefaultBannerCarouselEnabled();
 	}
@@ -1234,8 +1228,7 @@ export function setBannerTitleEnabled(enabled: boolean): void {
 
 export function setBannerCarouselEnabled(enabled: boolean): void {
 	const safeEnabled = !!enabled;
-	const isSwitchable =
-		backgroundWallpaper.banner?.carousel?.switchable ?? false;
+	const isSwitchable = displaySettingsConfig.bannerCarouselSwitchable;
 	if (
 		isSwitchable &&
 		typeof localStorage !== "undefined" &&
@@ -1283,4 +1276,66 @@ export function applyBannerCarouselEnabledToDocument(enabled: boolean): void {
 		"data-banner-carousel-enabled",
 		String(enabled),
 	);
+}
+
+// Card border functions
+export function getDefaultCardBorderEnabled(): boolean {
+	return siteConfig.card?.border ?? false;
+}
+
+export function getStoredCardBorderEnabled(): boolean {
+	if (typeof localStorage === "undefined") {
+		return getDefaultCardBorderEnabled();
+	}
+	const stored = localStorage.getItem("cardBorderEnabled");
+	if (stored === null) {
+		return getDefaultCardBorderEnabled();
+	}
+	return stored === "true";
+}
+
+export function setCardBorderEnabled(enabled: boolean): void {
+	if (
+		typeof localStorage === "undefined" ||
+		typeof localStorage.setItem !== "function"
+	) {
+		return;
+	}
+	localStorage.setItem("cardBorderEnabled", String(enabled));
+	if (enabled) {
+		document.documentElement.classList.add("enable-card-border");
+	} else {
+		document.documentElement.classList.remove("enable-card-border");
+	}
+}
+
+// Card follow theme functions
+export function getDefaultCardFollowThemeEnabled(): boolean {
+	return siteConfig.card?.followTheme ?? false;
+}
+
+export function getStoredCardFollowThemeEnabled(): boolean {
+	if (typeof localStorage === "undefined") {
+		return getDefaultCardFollowThemeEnabled();
+	}
+	const stored = localStorage.getItem("cardFollowThemeEnabled");
+	if (stored === null) {
+		return getDefaultCardFollowThemeEnabled();
+	}
+	return stored === "true";
+}
+
+export function setCardFollowThemeEnabled(enabled: boolean): void {
+	if (
+		typeof localStorage === "undefined" ||
+		typeof localStorage.setItem !== "function"
+	) {
+		return;
+	}
+	localStorage.setItem("cardFollowThemeEnabled", String(enabled));
+	if (enabled) {
+		document.body.classList.add("card-follow-theme-hue");
+	} else {
+		document.body.classList.remove("card-follow-theme-hue");
+	}
 }

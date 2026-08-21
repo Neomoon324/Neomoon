@@ -11,10 +11,10 @@ import {
 // ============================================================================
 const getDynamicNavBarConfig = (): NavBarConfig => {
 	// 基础导航栏链接
-	const links: NavBarLink[] = [
-		// 主页
-		LinkPresets.Home,
-	];
+	const links: NavBarLink[] = [];
+
+	// 主页
+	links.push(LinkPresets.Home);
 
 	// 文章及其子菜单
 	links.push({
@@ -33,7 +33,6 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 	// 友链
 	links.push(LinkPresets.Friends);
 
-
 	// 我的及其子菜单
 	links.push({
 		name: "我的",
@@ -43,17 +42,16 @@ const getDynamicNavBarConfig = (): NavBarConfig => {
 			// 相册
 			LinkPresets.Gallery,
 
+			// 哔哩哔哩追番
+			LinkPresets.Bilibili,
+
 			// 番组计划
 			LinkPresets.Bangumi,
-			
-			// bilibili
-			LinkPresets.bilibili
 		],
 	});
 
-	// 关于及其子菜单
+	// 关于
 	links.push(LinkPresets.About);
-
 
 	// 文档链接
 	// links.push({
@@ -99,38 +97,67 @@ export const LinkPresets: Record<string, NavBarLink> = {
 	Friends: {
 		name: "友链",
 		url: "/friends/",
-		icon: "material-symbols:group",
-	},
-	Sponsor: {
-		name: "赞助",
-		url: "/sponsor/",
-		icon: "material-symbols:favorite",
+		icon: "material-symbols:link-2-rounded",
+		pageKey: "friends",
 	},
 	Guestbook: {
 		name: "留言",
 		url: "/guestbook/",
 		icon: "material-symbols:chat",
+		pageKey: "guestbook",
 	},
-	About: {
-		name: "关于我",
-		url: "/about/",
-		icon: "material-symbols:person",
-	},
-	Bangumi: {
-		name: "番组计划",
-		url: "/bangumi/",
-		icon: "material-symbols:movie",
+	Dynamic: {
+		name: "动态",
+		url: "/dynamic/",
+		icon: "material-symbols:forum-rounded",
+		pageKey: "dynamic",
 	},
 	Gallery: {
 		name: "相册",
 		url: "/gallery/",
 		icon: "material-symbols:photo-library",
+		pageKey: "gallery",
 	},
-	bilibili: {
-		name: "bilibili",
-		url: "https://space.bilibili.com/617333392",
-		external: true,
-        icon: "fa7-brands:bilibili",
+	Booknav: {
+		name: "书签导航",
+		url: "/booknav/",
+		icon: "material-symbols:bookmarks",
+		pageKey: "booknav",
+	},
+	Bilibili: {
+		name: "哔哩哔哩",
+		url: "/bilibili/",
+		icon: "fa7-brands:bilibili",
+		pageKey: "bilibili",
+	},
+	Bangumi: {
+		name: "番组计划",
+		url: "/bangumi/",
+		icon: "material-symbols:movie",
+		pageKey: "bangumi",
+	},
+	VNDB: {
+		name: "VNDB",
+		url: "/vndb/",
+		icon: "material-symbols:chrome-reader-mode-rounded",
+		pageKey: "vndb",
+	},
+	MAL: {
+		name: "AnimeList",
+		url: "/myanimelist/",
+		icon: "material-symbols:menu-book",
+		pageKey: "mal",
+	},
+	Sponsor: {
+		name: "打赏",
+		url: "/sponsor/",
+		icon: "material-symbols:favorite",
+		pageKey: "sponsor",
+	},
+	About: {
+		name: "关于我",
+		url: "/about/",
+		icon: "material-symbols:person",
 	},
 };
 

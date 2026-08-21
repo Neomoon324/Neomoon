@@ -1,10 +1,10 @@
 <script lang="ts">
 import ClientPagination from "@/components/common/ClientPagination.svelte";
+import FilterControls from "@/components/common/FilterControls.svelte";
 import I18nKey from "@/i18n/i18nKey";
 import { i18n } from "@/i18n/translation";
 import type { UserSubjectCollection } from "@/types/bangumi";
 import Card from "./Card.svelte";
-import FilterControls from "./FilterControls.svelte";
 
 interface Props {
 	sectionId: string;
@@ -18,7 +18,7 @@ const {
 	sectionId,
 	items,
 	isActive,
-	itemsPerPage = 12,
+	itemsPerPage = 24,
 	subjectBaseUrl,
 }: Props = $props();
 
@@ -153,7 +153,7 @@ function goToPage(page: number) {
 }
 </script>
 
-<div class="bangumi-section" class:hidden={!isActive} data-section={sectionId}>
+<div class="media-section" class:hidden={!isActive} data-section={sectionId}>
   {#if items.length > 0}
     <FilterControls
       filters={filters()}
@@ -161,10 +161,10 @@ function goToPage(page: number) {
       onFilterChange={handleFilterChange}
     />
 
-    <div class="bangumi-masonry" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem;">
+    <div class="media-grid grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3">
       {#each pagedItems as item (item.subject_id)}
         <div
-          class="bangumi-item"
+          class="media-item"
           data-item-section={sectionId}
           data-item-status={STATUS_MAP[item.type as keyof typeof STATUS_MAP] || "unknown"}
         >
@@ -187,10 +187,3 @@ function goToPage(page: number) {
   {/if}
 </div>
 
-<style>
-  @media (min-width: 640px) {
-    :global(.bangumi-masonry) {
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)) !important;
-    }
-  }
-</style>
