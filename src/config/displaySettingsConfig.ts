@@ -43,10 +43,10 @@ export const displaySettingsConfig: DisplaySettingsConfig =
 		wallpaperModeSwitchable: true,
 
 		// 水波纹动画开关
-		wavesSwitchable: true,
+		wavesSwitchable: false,
 
 		// 渐变过渡效果开关
-		gradientSwitchable: true,
+		gradientSwitchable: false,
 
 		// 横幅标题显示开关
 		bannerTitleSwitchable: true,
@@ -58,7 +58,7 @@ export const displaySettingsConfig: DisplaySettingsConfig =
 		// 设为 false 关闭所有滑块，或用对象形式单独控制每个滑块
 		overlaySwitchable: {
 			opacity: true,
-			blur: false,
+			blur: true,
 			cardOpacity: true,
 		},
 
