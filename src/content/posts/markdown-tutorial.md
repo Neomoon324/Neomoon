@@ -3,7 +3,7 @@ title: Markdown 教程
 published: 2026-06-11
 pinned: false
 description: 一个简明的 Markdown 博客示例。
-tags: [Markdown, 文章示例]
+tags: [Markdown, 示例]
 category: 文章示例
 licenseName: "未授权"
 author: emn178
