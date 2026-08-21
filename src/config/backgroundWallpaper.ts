@@ -65,7 +65,7 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 	// 横幅壁纸和全屏壁纸共享配置
 	common: {
 		// 壁纸遮罩暗度，让横幅文字显示更清晰，0-1之间，值越大越暗
-		dimOpacity: 0.2,
+		dimOpacity: 0.3,
 		// 多视频播放模式："order" 顺序循环，"random" 随机切换（仅当 playerUrl 为数组时生效）
 		playerMode: "random",
 		// 主页横幅文字
@@ -75,7 +75,7 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 			// 主页横幅主标题
 			title: "krkr_Soraの部屋",
 			// 主页横幅主标题字体大小
-			titleSize: "3.5rem",
+			titleSize: "3.8rem",
 			// 主页横幅副标题
 			subtitle: [
 				"In Reddened Chrysalis, I Once Rest",
@@ -107,13 +107,13 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 				{
 					name: "GitHub",
 					icon: "fa7-brands:github",
-					url: "https://github.com/CuteLeaf/Firefly",
+					url: "https://github.com/Neomoon324/Neomoon",
 					showName: true,
 				},
 				{
 					name: "Email",
 					icon: "fa7-solid:envelope",
-					url: "mailto:xiaye@msn.com",
+					url: "mailto:1507887693@qq.com",
 				},
 				{
 					name: "Sponsor",
@@ -132,7 +132,7 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 			// 是否启用壁纸轮播；关闭时保持每次刷新随机显示一张
 			enable: false,
 			// 轮播切换间隔（毫秒）
-			interval: 5000,
+			interval: 8000,
 			// 过渡效果: 'fade' 渐变 | 'zoom' 缩放 | 'slide' 滑动 | 'kenburns' 旋转木马
 			transitionEffect: "zoom",
 		},
@@ -145,14 +145,14 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 		position: "0% 20%",
 		// 文章横幅信息："description" 显示描述，"meta" 显示日期、字数和阅读时长
 		postInfo: {
-			mode: "description",
+			mode: "meta",
 		},
 		navbar: {
 			// 导航栏透明模式："semi" 半透明，"full" 完全透明，"semifull" 动态透明
-			transparentMode: "semifull",
+			transparentMode: "full",
 			// 毛玻璃模糊度，0 即关闭导航栏的毛玻璃
 			// 注意：导航栏子菜单与浮动面板始终保留毛玻璃，模糊度跟随此项但有最小值
-			blur: 5,
+			blur: 0,
 		},
 		// 水波纹动画效果配置，开启会影响页面性能，增加内存占用，请根据自己的喜好开启
 		waves: {
@@ -167,12 +167,12 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 		gradient: {
 			enable: {
 				// 桌面端是否启用渐变过渡
-				desktop: false,
+				desktop: true,
 				// 移动端是否启用渐变过渡
 				mobile: true,
 			},
 			// 渐变高度
-			height: "10%",
+			height: "5%",
 		},
 	},
 	// 覆盖透明覆盖模式特有配置
@@ -196,7 +196,7 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 		// 全屏壁纸模式的导航栏配置
 		navbar: {
 			// 是否开启动态透明：开启后首页顶部导航栏透明，下滑后变不透明（仅首页生效）
-			dynamicTransparent: false,
+			dynamicTransparent: true,
 		},
 		// 首页下滑时壁纸模糊渐变开关（从 0 渐变为 overlay.blur 的最大模糊）
 		// 关闭后该设备上全屏壁纸保持清晰（首页与非首页都不模糊），设置面板的模糊度滑块也会隐藏

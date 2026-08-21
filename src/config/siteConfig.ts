@@ -13,16 +13,16 @@ const pages = resolvePageToggles({
 	// 友链页面开关
 	friends: true,
 	// 留言板页面开关，需要配置评论系统
-	guestbook: false,
+	guestbook: true,
 
 	// ── 我的 (My) ──────────────────────────────────
 
 	// 动态页面开关
-	dynamic: false,
+	dynamic: true,
 	// 相册页面开关
 	gallery: true,
 	// 书签导航页面开关
-	booknav: false,
+	booknav: true,
 	// 哔哩哔哩追番页面开关
 	bilibili: true,
 	// 番组计划页面开关
@@ -65,7 +65,7 @@ export const siteConfig: SiteConfig = {
 	// 页面整体宽度（单位：rem）
 	// 数值越大可以让页面内容区域更宽
 	// 在使用单侧栏边栏时，建议调低一些宽度以获得更好的视觉效果。
-	pageWidth: 83,
+	pageWidth: 85,
 
 	// 网站Card样式配置
 	card: {
@@ -131,7 +131,7 @@ export const siteConfig: SiteConfig = {
 	// 分类导航栏按钮样式
 	// "pill"：胶囊，主题色浅底圆角
 	// "rectangle"：矩形，配色同胶囊，仅圆角更小
-	categoryStyle: "rectangle",
+	categoryStyle: "pill",
 
 	// 标签样式，作用于文章列表底部标签、标签页和侧边栏标签
 	// "pill"：胶囊，主题色底圆角
@@ -218,7 +218,7 @@ export const siteConfig: SiteConfig = {
 			enablePythonMarkdownAdmonitions: false,
 		},
 		// 文章页底部的"上次编辑时间"卡片开关
-		showLastModified: false,
+		showLastModified: true,
 		// 文章过期阈值（天数），超过此天数才显示"上次编辑"卡片
 		outdatedThreshold: 30,
 		// 是否开启分享海报生成功能
