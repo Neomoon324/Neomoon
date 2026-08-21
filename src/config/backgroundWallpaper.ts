@@ -102,7 +102,7 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 			// 导航栏透明模式："semi" 半透明，"full" 完全透明，"semifull" 动态透明
 			transparentMode: "semifull",
 			// 是否开启毛玻璃模糊效果，开启可能会影响页面性能，如果不开启则是半透明，请根据自己的喜好开启
-			enableBlur: true,
+			enableBlur: false,
 			// 毛玻璃模糊度
 			blur: 5,
 		},
@@ -121,7 +121,7 @@ export const backgroundWallpaper: BackgroundWallpaperConfig = {
 		gradient: {
 			enable: {
 				// 桌面端是否启用渐变过渡
-				desktop: true,
+				desktop: false,
 				// 移动端是否启用渐变过渡
 				mobile: true,
 			},
